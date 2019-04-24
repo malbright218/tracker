@@ -1,0 +1,21 @@
+.container {
+    margin-top: 50px;
+    height: 120px;
+    align-content: center;
+}
+
+.card {
+    height: 118px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 150px;
+    border: none;
+}
+
+.btn {
+    margin: 4px;
+}
+
+#target {
+    text-align: center;
+}
