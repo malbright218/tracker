@@ -2,14 +2,15 @@ $(document).ready(function () {
 
 //  NEW JOB CREATION  /////////////////////////////////////////
     $("#new").on("click", function () {
+        
         $("#target").html("")
         $("#target1").html("")
         addJob();
     })
 
     function addJob() {
-        var input1 = $("<input id='jobNo' placeholder='Job Number'>")
-        var input2 = $("<input id='loc' placeholder='Location'>")
+        var input1 = $("<input class='form-control' id='jobNo' placeholder='Job Number'>")
+        var input2 = $("<input class='form-control' id='loc' placeholder='Location'>")
         var addBtn = ("<button id='addJob'>Add</button>")
         $("#target").prepend(input1, input2, addBtn)
         var number = $("#jobNo")
@@ -20,6 +21,9 @@ $(document).ready(function () {
                 location: jobloc.val().trim()
             }
             newBag(newJob)
+            $("#jobNo").val("")
+            $("#loc").val("")
+            $("#jobNo").focus()
         })
     }
 
@@ -43,13 +47,14 @@ $(document).ready(function () {
     }
 
     function scanJob() {
-        var input1 = $("<input placeholder='Job Number'>")
-        var input2 = $("<input id='newLoc' placeholder='New Location'>")
+        var input1 = $("<input class='form-control' id='jobNum' placeholder='Job Number'>")
+        var input2 = $("<input class='form-control' id='newLoc' placeholder='New Location'>")
         var scanBtn = ("<button id='scanJob'>Scan</button>")
         $("#target").prepend(input1, input2, scanBtn)
         $("#scanJob").on("click", function () {
             $.get("/api/jobs", scanData)
             function scanData(data) {
+                var time = moment().format("YYYY-MM-DDThh:mm:ss")
                 var input = $("input")
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].number === input.val().trim()) {
@@ -58,7 +63,12 @@ $(document).ready(function () {
                         var updateLoc = {};
                         updateLoc.id = id
                         updateLoc.location = newLoc.val().trim()
+                        updateLoc.updatedAt = time
                         updateLocation(updateLoc)
+
+                        $("#jobNum").val("")
+                        $("#newLoc").val("")
+                        $("#jobNum").focus()
                     }
                 }
             }
@@ -73,7 +83,7 @@ $(document).ready(function () {
     })
 
     function findJob() {
-        var blankInput = $("<input>")
+        var blankInput = $("<input class='form-control'>")
         var findBtn = $("<button id='findJob'>Find</button>")
         $("#target").prepend(blankInput, findBtn)
         $("#findJob").on("click", function () {
@@ -89,4 +99,38 @@ $(document).ready(function () {
             }
         })
     }
+    
+///////////////////////////////////////////////////////////////
+//  VIEW ALL JOBS  ////////////////////////////////////////////
+    $("#view").on("click", function () {
+        
+        $("#target").html("")
+        $("#target1").html("")
+        viewJob();
+    })
+
+    function viewJob() {
+        $.get("/api/jobs", getData)
+        function getData(data) {
+            var blanktable = $("<table>")
+                blanktable.addClass("table")
+                var header = $("<thead>")
+                var headrow = $("<tr>")
+                var headcol1 = $("<th scope='col'>Job Number</th>")
+                var headcol2 = $("<th scope='col'>Location</th>")
+                headrow.append(headcol1, headcol2)
+                header.append(headrow)
+            for (var i = 0; i < data.length; i++) {
+                var blankbody = $("<tbody>")
+                var bodyrow = $("<tr>")
+                var jobdata = $("<td>" + data[i].number + "</td>")
+                var locdata = $("<td>" + data[i].location + "</td>")
+                bodyrow.append(jobdata, locdata)
+                blankbody.append(bodyrow)
+                blanktable.append(header, blankbody)                
+            }
+            $("#target").append(blanktable)
+        }
+    }
+
 })

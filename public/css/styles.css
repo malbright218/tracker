@@ -1,21 +1,54 @@
+body {
+    background: #000000;
+}
+
+table, td, tr, th {
+    color: #fff;
+}
+
 .container {
     margin-top: 50px;
-    height: 120px;
+    height: 152px;
     align-content: center;
+    background: #000000;
 }
 
 .card {
-    height: 118px;
+    height: 152px;
     margin-top: auto;
     margin-bottom: auto;
     width: 150px;
     border: none;
+    background: #000000;
+}
+
+.form-control {
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .btn {
     margin: 4px;
+    color: #fff;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 18px;
 }
 
 #target {
     text-align: center;
+}
+
+#new {
+    background: #b82601;
+}
+
+#scan {
+    background: #813772;
+}
+
+#find {
+    background: #062f4f;
+}
+
+#view {
+    background: #b82601;
 }
